@@ -3,13 +3,14 @@ const bodyParser=require("body-parser")
 const cors=require("cors")
 const mongo= require('mongodb')
 const dotenv =require("dotenv")
+const ConnectedMongoose= require('./db.js')
 dotenv.config();
 const MongoClient=mongo.MongoClient
 const mongoUrl="mongodb+srv://admin-adarsh:adarsh123@cluster0.jshdb.mongodb.net/TripConnect?retryWrites=true&w=majority"
 var db;
 let port = process.env.PORT || 5000;
 
-
+ConnectedMongoose();
 //declare app
 const app= express(); 
 
@@ -17,6 +18,7 @@ const app= express();
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.json())
 app.use(cors())
+app.use('/api/auth',require('./routes/auth'))
 
 app.get('/',(req,res)=>{
     res.send("Its been delighted to Welcome you at TripConnect")
@@ -32,6 +34,16 @@ app.get("/location",(req,res)=>{
         }
     })
        
+})
+
+//get hotels
+app.get('/hotels',(req,res)=>{
+    db.collection('hotelData').find().toArray((err,result)=>{
+        if(err){
+            throw err
+        }
+        res.send(result)
+    })
 })
 
 //get hotels wrt city
@@ -61,17 +73,40 @@ app.get("/hotelsCat/:id",(req,res)=>{
 //filter data
 
 app.get('/filter/:hotelType',(req,res)=>{
+    let sort={cost:1};
+    let skip=0;
+    let limit=100000000000;
     let category_id=req.params.hotelType //hotelType id
     let facility_id=req.query.facility// facilty id
+    let lcost= (req.query.lcost)
+    let hcost =(req.query.hcost)
     let query={}
 
-    if(facility_id){
+    if(req.query.sort){
+        sort={cost:req.query.sort}
+    }
+    if(req.query.skip && req.query.limit){
+        skip = Number(req.query.skip);
+        limit = Number(req.query.limit);
+    }
+    if(facility_id && lcost && hcost){
+        query = {
+            "facilities.fac_id":facility_id,
+            "hotelType.cat_id":category_id,
+            $and:[{cost:{$gt:lcost,$lt:hcost}}]
+        }
+    }
+
+    else if(facility_id){
         query={"hotelType.cat_id":category_id,"facilities.fac_id":facility_id}
+    }
+    else if(lcost&hcost){
+        query = {$and:[{cost:{$gt:lcost,$lt:hcost}}],"hotelType.cat_id":category_id}
     }
 
 
 
-    db.collection('hotelData').find(query).toArray((err,result)=>{
+    db.collection('hotelData').find(query).sort(sort).skip(skip).limit(limit).toArray((err,result)=>{
         if(err){
             throw err
         }
@@ -121,7 +156,7 @@ app.get("/allBookings",(req,res)=>{
 })
 //placeBooking (post call)
 app.post("/placeBooking",(req,res)=>{
-    console.log(req.body)
+    
     db.collection('allBookings').insertOne(req.body,(err)=>{
         if(err){
             throw err
@@ -132,8 +167,7 @@ app.post("/placeBooking",(req,res)=>{
 
 //updateBookingOrder (put call)
 app.put("/updateBooking/:id",(req,res)=>{
-    console.log(req.params.id)
-    console.log(mongo.ObjectId(req.params.id))
+    
     let status= req.query.status?req.query.status:'Not Confirmed'
     db.collection('allBookings').updateOne(
         {_id:mongo.ObjectId(req.params.id)},
