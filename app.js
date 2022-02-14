@@ -3,14 +3,14 @@ const bodyParser=require("body-parser")
 const cors=require("cors")
 const mongo= require('mongodb')
 const dotenv =require("dotenv")
-const ConnectedMongoose= require('./db.js')
+
 dotenv.config();
 const MongoClient=mongo.MongoClient
 const mongoUrl="mongodb+srv://admin-adarsh:adarsh123@cluster0.jshdb.mongodb.net/TripConnect?retryWrites=true&w=majority"
 var db;
 let port = process.env.PORT || 5000;
 
-ConnectedMongoose();
+
 //declare app
 const app= express(); 
 
