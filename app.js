@@ -18,7 +18,7 @@ const app= express();
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.json())
 app.use(cors())
-app.use('/api/auth',require('./routes/auth'))
+
 
 app.get('/',(req,res)=>{
     res.send("Its been delighted to Welcome you at TripConnect")
