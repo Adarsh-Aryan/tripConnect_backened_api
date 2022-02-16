@@ -70,6 +70,17 @@ app.get("/hotelsCat/:id",(req,res)=>{
     })
 })
 
+//get all Facilities
+app.get("/allFacilities",(req,res)=>{
+    db.collection('facilities').find().toArray((err,result)=>{
+        if(err){
+            throw err
+
+        }
+        res.send(result)
+    })
+})
+
 //filter data
 
 app.get('/filter/:hotelType',(req,res)=>{
