@@ -52,3 +52,16 @@ UpdateBooking
 
 getAllUsers
 >https://trip-connect-api.herokuapp.com/api/auth/getAllUsers
+
+register routes
+>https://trip-connect-api.herokuapp.com/api/auth/register (post call)
+
+login routes
+>https://trip-connect-api.herokuapp.com/api/auth/login (post call)
+
+>get userInfo from the access-token
+
+req.headers[access-token]=jwt token of user
+
+>https://trip-connect-api.herokuapp.com/api/auth/userInfo
+
