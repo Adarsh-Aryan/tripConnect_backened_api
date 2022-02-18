@@ -49,3 +49,6 @@ DeleteBooking
 
 UpdateBooking
 >https://trip-connect-api.herokuapp.com/updateBooking/62020ff6dbeff7eeba58dd98/?status=Success (put request)
+
+getAllUsers
+>https://trip-connect-api.herokuapp.com/api/auth/getAllUsers

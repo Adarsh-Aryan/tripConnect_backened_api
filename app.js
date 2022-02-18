@@ -3,7 +3,7 @@ const bodyParser=require("body-parser")
 const cors=require("cors")
 const mongo= require('mongodb')
 const dotenv =require("dotenv")
-
+const ConnectedMongoose= require('./database/db.js')
 dotenv.config();
 const MongoClient=mongo.MongoClient
 const mongoUrl="mongodb+srv://admin-adarsh:adarsh123@cluster0.jshdb.mongodb.net/TripConnect?retryWrites=true&w=majority"
@@ -11,6 +11,7 @@ var db;
 let port = process.env.PORT || 5000;
 
 
+ConnectedMongoose();
 //declare app
 const app= express(); 
 
@@ -18,7 +19,7 @@ const app= express();
 app.use(bodyParser.urlencoded({extended:true}))
 app.use(express.json())
 app.use(cors())
-
+app.use('/api/auth',require('./routes/auth'))
 
 app.get('/',(req,res)=>{
     res.send("Its been delighted to Welcome you at TripConnect")
@@ -69,7 +70,6 @@ app.get("/hotelsCat/:id",(req,res)=>{
         }
     })
 })
-
 //get all Facilities
 app.get("/allFacilities",(req,res)=>{
     db.collection('facilities').find().toArray((err,result)=>{
