@@ -60,8 +60,8 @@ app.get("/hotels/:id",(req,res)=>{
 })
 
 //get hotels wrt hotelType
-app.get("/hotelsCat/:id",(req,res)=>{
-    db.collection('hotelData').find({"hotelType.cat_id":req.params.id}).toArray((err,result)=>{
+app.get("/hotelsCat/:category",(req,res)=>{
+    db.collection('hotelData').find({"hotelType.cat_name":req.params.category}).toArray((err,result)=>{
         if(err){
             throw err
         }
