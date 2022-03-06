@@ -10,7 +10,7 @@ Hotels Category Data
 
 Page2
 hotels wrt to hotelType
->https://trip-connect-api.herokuapp.com/hotelsCat/1  (get request)
+>https://trip-connect-api.herokuapp.com/hotelsCat/Business  (get request)
 
 filter
 > hotel Facilities filter
