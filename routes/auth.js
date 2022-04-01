@@ -6,6 +6,7 @@ const router = express.Router()
 const User = require('../models/User')
 const jwt =require("jsonwebtoken")
 const { hashingPassword, verifyPassword } = require('../config/password-controller')
+const { fetchUserEmail } = require('../config/fetchUserData')
 const jwt_secret=process.env.JWT_SECRET_KEY
 
 
@@ -14,6 +15,8 @@ router.use(cors())
 router.use(express.json())
 
 router.post('/register',async(req,res)=>{
+
+    console.log(req.body)
     
     const {name,email,password}=req.body
 
@@ -72,6 +75,19 @@ router.post('/login',async(req,res)=>{
     const token= jwt.sign({email:foundUser.email},jwt_secret)
 
     res.status(200).json({token:token,auth:true})
+})
+
+router.get('/getUser',fetchUserEmail,async(req,res)=>{
+
+    const foundUser= await User.findOne({email:req.email})
+
+    if(!foundUser){
+        res.status(404).json({message:'User Not Found!'})
+        return;
+    }
+
+    res.status(200).json(foundUser)
+
 })
 
 
