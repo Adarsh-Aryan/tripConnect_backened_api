@@ -10,7 +10,7 @@ Hotels Category Data
 
 Page2
 hotels wrt to hotelType
->https://trip-connect-api.herokuapp.com/hotelsCat/Business  (get request)
+>https://trip-connect-api.herokuapp.com/hotelsCat/1  (get request)
 
 filter
 > hotel Facilities filter
@@ -49,19 +49,3 @@ DeleteBooking
 
 UpdateBooking
 >https://trip-connect-api.herokuapp.com/updateBooking/62020ff6dbeff7eeba58dd98/?status=Success (put request)
-
-getAllUsers
->https://trip-connect-api.herokuapp.com/api/auth/getAllUsers
-
-register routes
->https://trip-connect-api.herokuapp.com/api/auth/register (post call)
-
-login routes
->https://trip-connect-api.herokuapp.com/api/auth/login (post call)
-
->get userInfo from the access-token
-
-req.headers[access-token]=jwt token of user
-
->https://trip-connect-api.herokuapp.com/api/auth/userInfo
-

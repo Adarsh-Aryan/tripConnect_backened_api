@@ -4,6 +4,7 @@ const cors=require("cors")
 const mongo= require('mongodb')
 const dotenv =require("dotenv")
 const ConnectedMongoose= require('./database/db.js')
+const { fetchUserEmail } = require('./config/fetchUserData.js')
 dotenv.config();
 const MongoClient=mongo.MongoClient
 const mongoUrl="mongodb+srv://admin-adarsh:adarsh123@cluster0.jshdb.mongodb.net/TripConnect?retryWrites=true&w=majority"
@@ -151,9 +152,9 @@ app.get("/details/:id",(req,res)=>{
 })
 
 //get all bookings
-app.get("/allBookings",(req,res)=>{
-    let email=req.query.email
-    db.collection('allBookings').find({"email":email}).toArray((err,result)=>{
+app.get("/allBookings",fetchUserEmail,(req,res)=>{
+    
+    db.collection('allBookings').find({"email":req.email}).toArray((err,result)=>{
         if(err){
             throw err
         }
