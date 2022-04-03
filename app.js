@@ -158,11 +158,7 @@ app.get("/allBookings",fetchUserEmail,(req,res)=>{
         if(err){
             throw err
         }
-        if(result.length===0){
-            res.send(`No booking found on this user ${email}`)
-            // stop further execution in this callback
-            return;
-        }
+        
         res.send(result)
     })
 })
